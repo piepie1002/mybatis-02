@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pie.mybatis.mapper.RolesMapper">
+    <!--mybatis里  resultMap来映射  PO -->
+    <resultMap id="BaseResultMap" type="Roles">
+        <!--   对应数据的ID-->
+        <id property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="dec" column="dec"/>
+        <result property="isDel" column="is_del"/>
+    </resultMap>
+    <!---->
+    <resultMap id="CollectionResultMap" type="Roles" extends="BaseResultMap">
+        <collection property="privileges" resultMap="com.pie.mybatis.mapper.PrivilegeMapper.BaseResultMap"/>
+    </resultMap>
+    <!---->
+    <sql id="Base_Column_List">
+    role_id,
+    role_name,
+    `dec`,
+    is_del
+    </sql>
+    <select id="selectById" resultMap="BaseResultMap">
+    
+    </select>
+    <select id="selectByUserId" resultMap="CollectionResultMap">
+        select *
+        from roles r 
+        left join roles_privilege_relation rpr on r.role_id = rpr.role_id
+        left join privilege p on rpr.privilege_id =p.privilege_id
+        where u_id=#{userId}
+    </select>
+   
+</mapper>

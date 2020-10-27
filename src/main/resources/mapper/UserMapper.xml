@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pie.mybatis.mapper.UserMapper">
+    <!--mybatis里  resultMap来映射  PO -->
+    <resultMap id="BaseResultMap" type="User">
+        <!--   对应数据的ID-->
+        <id property="uId" column="u_id"/>
+        <result property="uUsername" column="u_username"/>
+        <result property="uPassword" column="u_password"/>
+        <result property="uStatus" column="u_status"/>
+    </resultMap>
+    <resultMap id="CollectionResultMap" type="User" extends="BaseResultMap">
+        <collection property="addresses" resultMap="com.pie.mybatis.mapper.AddressMapper.BaseResultMap"/>
+    </resultMap>
+    <!--根据用户id查询地址-->
+    <select id="selectByUserId" resultMap="CollectionResultMap">
+        select * 
+        from user u 
+        left join t_address tad on u.u_id = tad.u_id
+        where u.u_id = #{uId}
+    </select>
+      
+</mapper>
